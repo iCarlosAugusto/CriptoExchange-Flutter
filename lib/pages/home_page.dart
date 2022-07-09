@@ -13,17 +13,36 @@ class _HomePageState extends State<HomePage> {
   final table = CoinRepository.table;
   List<Coin> selectedCoin = [];
 
+  dynamicAppBar() {
+    if (selectedCoin.isNotEmpty) {
+      return AppBar(
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                setState(() {
+                  selectedCoin = [];
+                });
+              }), title: Text('Moedas selecioandas: ${selectedCoin.length}'),);
+    } else {
+      return AppBar(
+        title: const Text("Home Page")
+      );
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Home Page")),
+      appBar: dynamicAppBar(),
       body: ListView.separated(
           itemBuilder: (BuildContext content, int index) {
             return ListTile(
               title: Text(table[index].name),
               leading: IconButton(
                   icon: selectedCoin.contains(table[index])
-                  ? const CircleAvatar(child: Icon(Icons.check))
-                  : SizedBox(child: Image.asset(table[index].image),) ,
+                      ? const CircleAvatar(child: Icon(Icons.check))
+                      : SizedBox(
+                          child: Image.asset(table[index].image),
+                        ),
                   onPressed: () {
                     setState(() {
                       if (selectedCoin.contains(table[index])) {
@@ -35,9 +54,7 @@ class _HomePageState extends State<HomePage> {
                   }),
               trailing: Text(table[index].value),
               selected: selectedCoin.contains(table[index]),
-              onTap: () {
-                
-              },
+              onTap: () {},
             );
           },
           separatorBuilder: (_, __) => const Divider(),
