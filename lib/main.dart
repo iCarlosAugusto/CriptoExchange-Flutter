@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         "/": (contenxt) => const HomePage(),
-        "/coinDetails": (contenxt) => const  CoinDetails()
+        "/coinDetails": (contenxt) => CoinDetails()
       },
     );
   }
