@@ -1,3 +1,4 @@
+import 'package:cripto_exchange/pages/coin_details.dart';
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 
@@ -10,8 +11,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage()
+    return MaterialApp(
+      initialRoute: "/",
+      routes: {
+        "/": (contenxt) => const HomePage(),
+        "/coinDetails": (contenxt) => const  CoinDetails()
+      },
     );
   }
 }
