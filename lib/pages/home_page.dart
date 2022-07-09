@@ -1,4 +1,5 @@
 import 'package:cripto_exchange/models/coin.dart';
+import 'package:cripto_exchange/pages/coin_details.dart';
 import 'package:flutter/material.dart';
 import '../repository/coinRepository.dart';
 
@@ -16,17 +17,17 @@ class _HomePageState extends State<HomePage> {
   dynamicAppBar() {
     if (selectedCoin.isNotEmpty) {
       return AppBar(
-          leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                setState(() {
-                  selectedCoin = [];
-                });
-              }), title: Text('Moedas selecioandas: ${selectedCoin.length}'),);
-    } else {
-      return AppBar(
-        title: const Text("Home Page")
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              setState(() {
+                selectedCoin = [];
+              });
+            }),
+        title: Text('Moedas selecioandas: ${selectedCoin.length}'),
       );
+    } else {
+      return AppBar(title: const Text("Home Page"));
     }
   }
 
@@ -54,7 +55,16 @@ class _HomePageState extends State<HomePage> {
                   }),
               trailing: Text(table[index].value),
               selected: selectedCoin.contains(table[index]),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(
+                  context, "/coinDetails",
+                  arguments: CoinDetailsParams(
+                    name: table[index].name,
+                    value: table[index].value,
+                    image: table[index].image
+                  )
+                );
+              },
             );
           },
           separatorBuilder: (_, __) => const Divider(),
