@@ -10,7 +10,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final table = CoinRepository.table;
   List<Coin> selectedCoin = [];
 
@@ -21,19 +20,23 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (BuildContext content, int index) {
             return ListTile(
               title: Text(table[index].name),
-              leading: selectedCoin.contains(table[index]) 
-                ? const CircleAvatar(child: Icon(Icons.check)) 
-                : SizedBox(child: Image.asset(table[index].image, width: 40,)),
+              leading: IconButton(
+                  icon: selectedCoin.contains(table[index])
+                  ? const CircleAvatar(child: Icon(Icons.check))
+                  : SizedBox(child: Image.asset(table[index].image),) ,
+                  onPressed: () {
+                    setState(() {
+                      if (selectedCoin.contains(table[index])) {
+                        selectedCoin.remove(table[index]);
+                      } else {
+                        selectedCoin.add(table[index]);
+                      }
+                    });
+                  }),
               trailing: Text(table[index].value),
               selected: selectedCoin.contains(table[index]),
               onTap: () {
-                setState(() {
-                  if (selectedCoin.contains(table[index])) {
-                    selectedCoin.remove(table[index]);
-                  } else {
-                    selectedCoin.add(table[index]);
-                  }
-                });
+                
               },
             );
           },
