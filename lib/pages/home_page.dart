@@ -33,42 +33,52 @@ class _HomePageState extends State<HomePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: dynamicAppBar(),
-      body: ListView.separated(
-          itemBuilder: (BuildContext content, int index) {
-            return ListTile(
-              title: Text(table[index].name),
-              leading: IconButton(
-                  icon: selectedCoin.contains(table[index])
-                      ? const CircleAvatar(child: Icon(Icons.check))
-                      : SizedBox(
-                          child: Image.asset(table[index].image),
-                        ),
+        appBar: dynamicAppBar(),
+        body: ListView.separated(
+            itemBuilder: (BuildContext content, int index) {
+              return ListTile(
+                title: Text(table[index].name),
+                leading: IconButton(
+                    icon: selectedCoin.contains(table[index])
+                        ? const CircleAvatar(child: Icon(Icons.check))
+                        : SizedBox(
+                            child: Image.asset(table[index].image),
+                          ),
+                    onPressed: () {
+                      setState(() {
+                        if (selectedCoin.contains(table[index])) {
+                          selectedCoin.remove(table[index]);
+                        } else {
+                          selectedCoin.add(table[index]);
+                        }
+                      });
+                    }),
+                trailing: Text(table[index].value),
+                selected: selectedCoin.contains(table[index]),
+                onTap: () {
+                  Navigator.pushNamed(context, "/coinDetails",
+                      arguments: CoinDetailsParams(
+                          name: table[index].name,
+                          value: table[index].value,
+                          image: table[index].image));
+                },
+              );
+            },
+            separatorBuilder: (_, __) => const Divider(),
+            itemCount: table.length),
+        floatingActionButton: Container(
+          margin: const EdgeInsets.only(bottom: 40),
+          child: selectedCoin.isNotEmpty
+              ? ElevatedButton.icon(
+                  icon: const Icon(Icons.star),
+                  label: const Text("Favorite"),
                   onPressed: () {
                     setState(() {
-                      if (selectedCoin.contains(table[index])) {
-                        selectedCoin.remove(table[index]);
-                      } else {
-                        selectedCoin.add(table[index]);
-                      }
+                      selectedCoin = [];
                     });
-                  }),
-              trailing: Text(table[index].value),
-              selected: selectedCoin.contains(table[index]),
-              onTap: () {
-                Navigator.pushNamed(
-                  context, "/coinDetails",
-                  arguments: CoinDetailsParams(
-                    name: table[index].name,
-                    value: table[index].value,
-                    image: table[index].image
-                  )
-                );
-              },
-            );
-          },
-          separatorBuilder: (_, __) => const Divider(),
-          itemCount: table.length),
-    );
+                  },
+                )
+              : null,
+        ));
   }
 }
