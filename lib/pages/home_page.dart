@@ -1,6 +1,7 @@
 import 'package:cripto_exchange/models/coin.dart';
 import 'package:cripto_exchange/pages/coin_details.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../repository/coinRepository.dart';
 import '../repository/favorites_repository.dart';
 
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final table = CoinRepository.table;
   List<Coin> selectedCoin = [];
-  FavoritesRepository favoritesRepository = FavoritesRepository();
+  //FavoritesRepository favoritesRepository = FavoritesRepository();
 
   dynamicAppBar() {
     if (selectedCoin.isNotEmpty) {
@@ -34,6 +35,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget build(BuildContext context) {
+    FavoritesRepository favoritesRepository = Provider.of<FavoritesRepository>(context);
+    
     return Scaffold(
         appBar: dynamicAppBar(),
         body: ListView.separated(
@@ -41,7 +44,8 @@ class _HomePageState extends State<HomePage> {
               return ListTile(
                 title: Row(children: [
                   Text(table[index].name),
-                  if (favoritesRepository.favoritesCoinList.contains(table[index]))
+                  if (favoritesRepository.favoritesCoinList
+                      .contains(table[index]))
                     const Icon(
                       Icons.star,
                       color: Colors.amber,
@@ -75,7 +79,6 @@ class _HomePageState extends State<HomePage> {
             },
             separatorBuilder: (_, __) => const Divider(),
             itemCount: table.length),
-            
         floatingActionButton: Container(
           margin: const EdgeInsets.only(bottom: 40),
           child: selectedCoin.isNotEmpty
