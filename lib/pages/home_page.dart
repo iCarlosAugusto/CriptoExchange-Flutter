@@ -71,9 +71,11 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.pushNamed(context, "/coinDetails",
                       arguments: CoinDetailsParams(
+                          coin: table[index],
                           name: table[index].name,
                           value: table[index].value,
-                          image: table[index].image));
+                          image: table[index].image
+                        ));
                 },
               );
             },

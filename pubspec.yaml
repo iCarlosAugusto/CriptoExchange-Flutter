@@ -36,6 +36,8 @@ dependencies:
   mobx: ^2.0.7+4
   flutter_mobx: ^2.0.6+1
   provider: ^6.0.3
+  sqflite: ^2.0.3
+  path:
 
 dev_dependencies:
   flutter_test:
