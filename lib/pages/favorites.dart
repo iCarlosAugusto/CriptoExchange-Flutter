@@ -12,7 +12,12 @@ class Favorites extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Favorites criptos")),
-      body: const Center(child: Text("Favorites!")),
+      body: ListView.separated(
+          itemBuilder: (context, index) {
+            return Text(favoritesRepository.favoritesCoinList[index].name);
+          },
+          separatorBuilder: (_, __) => const Divider(),
+          itemCount: favoritesRepository.favoritesCoinList.length),
       floatingActionButton: FloatingActionButton(
         child: Text("Teste"),
         onPressed: () {
