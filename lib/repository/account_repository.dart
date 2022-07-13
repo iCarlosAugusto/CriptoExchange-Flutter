@@ -10,6 +10,14 @@ class AccountRepository = _AccountRepositoryBase with _$AccountRepository;
 abstract class _AccountRepositoryBase with Store {
   late Database db;
 
+  accountRepository() {
+    _initRepository();
+  }
+
+  _initRepository() async {
+    await getWallet();
+  }
+
   @observable
   int balance = 0;
 
@@ -20,7 +28,8 @@ abstract class _AccountRepositoryBase with Store {
     db = await DB.instance.database;
 
     //Verify if the coin already exists in the Wallet table.
-    var coinAlreadyExists = await db.query("wallet", where: 'name = ?', whereArgs: [coin.name]);
+    var coinAlreadyExists =
+        await db.query("wallet", where: 'name = ?', whereArgs: [coin.name]);
 
     //If coinAlreadyExists... add into table wallet
     if (coinAlreadyExists.isEmpty) {
@@ -29,7 +38,15 @@ abstract class _AccountRepositoryBase with Store {
     }
 
     //If not, some the amount value;
-    var currentAmountOfCoins = double.parse(coinAlreadyExists.first['amount'].toString());
-    await db.update("wallet", {"amount": (amount + currentAmountOfCoins).toString()}, where: 'name = ?', whereArgs: [coin.name]);
+    var currentAmountOfCoins =
+        double.parse(coinAlreadyExists.first['amount'].toString());
+    await db.update(
+        "wallet", {"amount": (amount + currentAmountOfCoins).toString()},
+        where: 'name = ?', whereArgs: [coin.name]);
+  }
+
+  getWallet() async {
+    var res = await db.query("wallet");
+    print(res);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cripto_exchange/pages/favorites.dart';
 import 'package:cripto_exchange/pages/home_page.dart';
+import 'package:cripto_exchange/pages/wallet_page.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -17,7 +18,7 @@ class _MainPageState extends State<MainPage> {
 
     return Scaffold(
       body: PageView(
-        children: [HomePage(), Favorites()],
+        children: [HomePage(), Favorites(), WalletPage()],
         controller: pageViewController,
         onPageChanged: (index) {
           setState(() {
@@ -39,6 +40,10 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.star_border), 
             label: "Favorites"
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.wallet),
+            label: "My Wallet"
           ),
         ],
       ),
