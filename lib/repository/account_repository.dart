@@ -18,9 +18,18 @@ abstract class _AccountRepositoryBase with Store {
 
   void buyCripto(Coin coin, int amount) async {
     db = await DB.instance.database;
-    await db.insert("wallet", {
-      "name": coin.name,
-      "amount": amount
-    });
+
+    //Verify if the coin already exists in the Wallet table.
+    var coinAlreadyExists = await db.query("wallet", where: 'name = ?', whereArgs: [coin.name]);
+
+    //If coinAlreadyExists... add into table wallet
+    if (coinAlreadyExists.isEmpty) {
+      await db.insert("wallet", {"name": coin.name, "amount": amount});
+      return;
+    }
+
+    //If not, some the amount value;
+    var currentAmountOfCoins = double.parse(coinAlreadyExists.first['amount'].toString());
+    await db.update("wallet", {"amount": (amount + currentAmountOfCoins).toString()}, where: 'name = ?', whereArgs: [coin.name]);
   }
 }

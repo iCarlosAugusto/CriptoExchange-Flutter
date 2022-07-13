@@ -1,7 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-
 class DB {
   DB._();
 
@@ -11,10 +10,8 @@ class DB {
 
   get database async {
     if (_database != null) {
-      print("Data base não é null");
       return _database;
     }
-
     return await _initDatabase();
   }
 
@@ -32,8 +29,8 @@ class DB {
     await db.execute(_historico);
     await db.insert('conta', {'saldo': 0});
   }
-  
-    String get _conta => '''
+
+  String get _conta => '''
     CREATE TABLE conta (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       saldo REAL
@@ -41,7 +38,7 @@ class DB {
   ''';
 
   String get _wallet => '''
-    CREATE TABLE carteira (
+    CREATE TABLE wallet (
       name TEXT PRIMARY KEY,
       amount TEXT
     );

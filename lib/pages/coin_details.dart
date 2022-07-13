@@ -26,6 +26,7 @@ class _CoinDetailsState extends State<CoinDetails> {
   final formKey = GlobalKey<FormState>();
 
   AccountRepository accountRepository = AccountRepository();
+  TextEditingController textFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +57,7 @@ class _CoinDetailsState extends State<CoinDetails> {
                 child: Column(
                   children: [
                     TextFormField(
+                      controller: textFieldController,
                       decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           labelText:
@@ -72,26 +74,19 @@ class _CoinDetailsState extends State<CoinDetails> {
             ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    accountRepository.buyCripto(arguments.coin, 10);
-                    //Navigator.pop(context);
-                    //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    //    content: Text("Compra realizada com sucesso!"),
-                    //    backgroundColor: Colors.green));
+                    accountRepository.buyCripto(arguments.coin, int.parse(textFieldController.text));
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Compra realizada com sucesso!"),
+                        backgroundColor: Colors.green));
                   }
                 },
                 child: const Text("Buy now"),
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Colors.green.shade500)))
-          ])),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Database db = await DB.instance.database;
-          var result = db.query("wallet");
-
-        },
-        child: const Text("Teste"),
-      ),
-    );
+          ])
+        ),
+      );
+    }
   }
-}
